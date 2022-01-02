@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:secondapp/test.dart';
+import 'package:secondapp/testmark.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -155,7 +160,7 @@ class _MyAppState extends State<MyApp> {
             ],
           ),
           SizedBox(
-            height: 50,
+            height: 20,
           ),
           Row(
             children: [
@@ -168,10 +173,11 @@ class _MyAppState extends State<MyApp> {
                       onPressed: () {},
                       child: Image.asset(
                         'images/camera.png',
-                        height: 128,
+                        height: 130,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Text('Take Picture'),
+                    //Text('Take Picture'),
                   ],
                 ),
               ),
@@ -187,17 +193,73 @@ class _MyAppState extends State<MyApp> {
                       onPressed: () {},
                       child: Image.asset(
                         'images/gallery.png',
-                        height: 128,
+                        height: 130,
                       ),
                     ),
-                    Text('choose from gallery'),
+                    //Text('choose from gallery'),
                   ],
                 ),
               ),
             ],
           ),
           SizedBox(
-            height: 50,
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {},
+                child: Container(
+                  child: Text(
+                    'Camera',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  width: 80,
+                  height: 30,
+                ),
+              ),
+              // SizedBox(
+              //   width: 80,
+              // ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Multiimage()),
+                  );
+                },
+                child: Container(
+                  child: Text(
+                    'Gallery',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  width: 80,
+                  height: 30,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -215,8 +277,8 @@ class _MyAppState extends State<MyApp> {
                   color: Colors.white,
                 ),
               ),
-              width: 160,
-              height: 40,
+              width: 150,
+              height: 50,
             ),
           ),
         ],

@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:secondapp/Model/EMPTR.dart';
+import 'package:secondapp/courses.dart';
 import 'package:secondapp/dashboard.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
+import 'package:flutter/cupertino.dart';
+
+// class org {
+//   bool status;
+//   org({
+//     required this.status,
+//   });
+//   factory org.fromJson(Map<String, dynamic> parsedJson) {
+//     return org(
+//       status: parsedJson['status'],
+//     );
+//   }
+// }
 
 class loginpage extends StatefulWidget {
   const loginpage({Key? key}) : super(key: key);
-
   @override
   _loginpageState createState() => _loginpageState();
 }
@@ -17,7 +32,7 @@ class _loginpageState extends State<loginpage> {
   late bool error, sending, success;
   late String msg;
   late String role;
-  String url = "http://192.168.43.166:5000/testingtesting";
+  String url = "http://192.168.0.102:5001/Login";
   @override
   void initState() {
     error = false;
@@ -27,42 +42,75 @@ class _loginpageState extends State<loginpage> {
   }
 
   Future<void> verifylogin() async {
-    var res = await http.post(Uri.parse(url), body: {
-      'username': usernameController.text,
-      'password': passwordController.text,
-      //'Role': roleController.text,
-    });
+    var res = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username': usernameController.text,
+        'password': passwordController.text,
+      }),
+    );
     if (res.statusCode == 200) {
       print(res.body);
-      var data = json.decode(res.body);
+      Emptr data = emptrFromJson(res.body);
       print(data);
-      if (data != null) {
+      // print(data['username'].toString());
+      // int status = data['status'];
+      //print(userrname);
+      // final payload = {
+      //   data: ['status'].toString()
+      // };
+      //print(payload);
+      // String type;
+      // type = data.type;
+      if (data.type == 'T') {
+        setState(
+          () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => dashbord()));
+          },
+        );
+      }
+      if (data.type == 'S') {
         setState(() {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => dashbord()));
+              context, MaterialPageRoute(builder: (context) => courses()));
         });
       }
-      if (data["error"]) {
-        setState(() {
-          sending = false;
-          error = true;
-          msg = data["message"];
-        });
-      } else {
-        usernameController.text = '';
-        passwordController.text = '';
-        setState(() {
-          sending = false;
-          success = true;
-        });
-      }
+
+      // if (data["error"]) {
+      //   setState(() {
+      //     sending = false;
+      //     error = true;
+      //     msg = data["message"];
+      //   });
+      // } else {
+      //   usernameController.text = '';
+      //   passwordController.text = '';
+      //   setState(() {
+      //     sending = false;
+      //     success = true;
+      //   });
+      // }
     } else {
-      setState(() {
-        error = true;
-        msg = "Error during sending data";
-        sending = false;
-      });
+      showAlertDialog(context);
     }
+    // if (res.statusCode == 103) {
+    //   setState(() {
+    //     error = true;
+    //     msg = "Error during sending data";
+    //     sending = false;
+    //   });
+    // }
+    // else {
+    //   setState(() {
+    //     error = true;
+    //     msg = "Error during sending data";
+    //     sending = false;
+    //   });
+    // }
   }
 
   @override
@@ -124,11 +172,11 @@ class _loginpageState extends State<loginpage> {
                   disabledColor: Colors.blue,
                   child: ElevatedButton(
                     onPressed: () {
-                      // verifylogin();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => dashbord()),
-                      );
+                      verifylogin();
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => dashbord()),
+                      // );
 
                       //setState(() {});
                     },
@@ -148,4 +196,36 @@ class _loginpageState extends State<loginpage> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  // Widget continueButton = TextButton(
+  //   child: Text("Continue"),
+  //   onPressed: () {},
+  // );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Invalid Login"),
+    content: Text("Please enter valid username and password"),
+    actions: [
+      cancelButton,
+      // continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
