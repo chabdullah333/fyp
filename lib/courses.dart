@@ -1,11 +1,66 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:secondapp/Model/EMPTR.dart';
 import 'package:secondapp/Model/Stenrollcources.dart';
 import 'package:secondapp/dashboard.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondapp/stdcrsattendance.dart';
+import 'package:secondapp/testmark.dart';
 
-class courses extends StatelessWidget {
-  const courses({Key? key}) : super(key: key);
+// class courses extends StatelessWidget {
+//   final String username;
+//   const courses( {Key? key, required this.username}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(
+//           "Courses",
+//           style: TextStyle(
+//             color: Colors.white,
+//           ),
+//         ),
+//         centerTitle: true,
+//         backgroundColor: Colors.red,
+//       ),
+//       body: coursebody(username: '',),
+//     );
+//   }
+// }
+
+class coursebody extends StatefulWidget {
+  final String username;
+  const coursebody({Key? key, required this.username}) : super(key: key);
+
+  @override
+  _coursebodyState createState() => _coursebodyState();
+}
+
+class _coursebodyState extends State<coursebody> {
+  Future<List<Stenrollcources>> fetchServices() async {
+    final response = await http.get(
+      Uri.parse(
+          'http://${Url.ip}:5001/SEnrolledcourses?username=${widget.username}'),
+    );
+    if (response.statusCode == 200) {
+      List<Stenrollcources> paresd = stenrollcourcesFromJson(response.body);
+      ;
+      return paresd;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  late String Coursecode;
+  late Future<List<Stenrollcources>> data;
+  @override
+  void initState() {
+    super.initState();
+    data = fetchServices();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,129 +75,7 @@ class courses extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
-      body: coursebody(),
-    );
-  }
-}
-
-class coursebody extends StatefulWidget {
-  const coursebody({Key? key}) : super(key: key);
-
-  @override
-  _coursebodyState createState() => _coursebodyState();
-}
-
-class _coursebodyState extends State<coursebody> {
-  Future<List<Stenrollcources>> fetchServices() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.0.102:5001/SEnrolledcourses'));
-    if (response.statusCode == 200) {
-      List<Stenrollcources> paresd = stenrollcourcesFromJson(response.body);
-      ;
-      return paresd;
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
-
-  late Future<List<Stenrollcources>> data;
-
-  @override
-  void initState() {
-    super.initState();
-    data = fetchServices();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // return ListView(
-    //   children: [
-    //     ListTile(
-    //       leading: Image(
-    //         image: AssetImage('images/book (1).png'),
-    //       ),
-    //       title: Text(
-    //         "OOP         (80%)",
-    //         style: TextStyle(
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //       subtitle: Text("Object oriented programming"),
-    //       onTap: () {},
-    //     ),
-    //     ListTile(
-    //       leading: Image(
-    //         image: AssetImage('images/book (1).png'),
-    //       ),
-    //       title: Text(
-    //         "PF            (90%)",
-    //         style: TextStyle(
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //       subtitle: Text("Programming Fundamental"),
-    //       onTap: () {},
-    //     ),
-    //     ListTile(
-    //       leading: Image(
-    //         image: AssetImage('images/book (1).png'),
-    //       ),
-    //       title: Text(
-    //         "DBS         (99%)",
-    //         style: TextStyle(
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //       subtitle: Text("Database System"),
-    //       onTap: () {},
-    //     ),
-    //     ListTile(
-    //       tileColor: Colors.redAccent,
-    //       leading: Image(
-    //         image: AssetImage('images/book (1).png'),
-    //       ),
-    //       title: Text(
-    //         "DLD         (60%)",
-    //         style: TextStyle(
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //       subtitle: Text("Digital Logic Design"),
-    //       onTap: () {},
-    //     ),
-    //     ListTile(
-    //       leading: Image(
-    //         image: AssetImage('images/book (1).png'),
-    //       ),
-    //       title: Text(
-    //         "AI            (77%)",
-    //         style: TextStyle(
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //       subtitle: Text("Artificial Intelligence"),
-    //       onTap: () {},
-    //     ),
-    //     ListTile(
-    //       tileColor: Colors.redAccent,
-    //       leading: Image(
-    //         image: AssetImage('images/book (1).png'),
-    //       ),
-    //       title: Text(
-    //         "ITC         (40%)",
-    //         style: TextStyle(
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //       subtitle: Text("Introduction to Computer"),
-    //       onTap: () {},
-    //     ),
-    //   ],
-    // );
-
-    return Padding(
-      padding: EdgeInsets.all(8),
-      child: SingleChildScrollView(
+      body: SingleChildScrollView(
           child: Column(
         children: [
           SizedBox(
@@ -159,19 +92,31 @@ class _coursebodyState extends State<coursebody> {
                     shrinkWrap: true,
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      return Card(
-                        child: Row(
+                      return Container(
+                        width: 350,
+                        height: 80,
+                        child: ListView(
                           children: [
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Container(
-                              child: Image(
+                            ListTile(
+                              leading: Image(
                                 image: AssetImage('images/book (1).png'),
                               ),
-                            ),
-                            Text(
-                              snapshot.data![index].title,
+                              title: Text(
+                                snapshot.data![index].code,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(snapshot.data![index].title),
+                              onTap: () {
+                                Coursecode = snapshot.data![index].code;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => courseattendance(
+                                            username: widget.username,
+                                            coursecode: Coursecode)));
+                              },
                             ),
                           ],
                         ),

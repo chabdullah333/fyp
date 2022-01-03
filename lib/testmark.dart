@@ -1,1 +1,3 @@
-
+class Url {
+  static final ip = "192.168.43.166";
+}

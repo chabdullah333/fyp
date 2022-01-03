@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:secondapp/testmark.dart';
 
 // class org {
 //   bool status;
@@ -28,11 +29,10 @@ class loginpage extends StatefulWidget {
 class _loginpageState extends State<loginpage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  late String username, password;
   late bool error, sending, success;
   late String msg;
   late String role;
-  String url = "http://192.168.0.102:5001/Login";
+  String url = "http://${Url.ip}:5001/Login";
   @override
   void initState() {
     error = false;
@@ -41,6 +41,7 @@ class _loginpageState extends State<loginpage> {
     super.initState();
   }
 
+  late String uname;
   Future<void> verifylogin() async {
     var res = await http.post(
       Uri.parse(url),
@@ -53,6 +54,7 @@ class _loginpageState extends State<loginpage> {
       }),
     );
     if (res.statusCode == 200) {
+      uname = usernameController.text;
       print(res.body);
       Emptr data = emptrFromJson(res.body);
       print(data);
@@ -76,7 +78,9 @@ class _loginpageState extends State<loginpage> {
       if (data.type == 'S') {
         setState(() {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => courses()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => coursebody(username: uname)));
         });
       }
 
