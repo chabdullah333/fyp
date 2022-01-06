@@ -5,7 +5,15 @@ import 'package:secondapp/markattendance.dart';
 import 'package:secondapp/showattendance.dart';
 
 class dashbord extends StatelessWidget {
-  const dashbord({Key? key}) : super(key: key);
+  final String firstname;
+  final String lastname;
+  final String username;
+  const dashbord(
+      {Key? key,
+      required this.firstname,
+      required this.lastname,
+      required this.username})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +60,11 @@ class dashbord extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyApp()),
+                                  builder: (context) => MyApp(
+                                      firstname: firstname,
+                                      lastname: lastname,
+                                      username: username),
+                                ),
                               );
                             },
                             child: Image.asset(

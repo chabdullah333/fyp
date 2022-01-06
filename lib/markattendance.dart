@@ -1,20 +1,60 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:secondapp/test.dart';
 import 'package:secondapp/testmark.dart';
 
+import 'Model/MarkAtttendanceModel.dart';
+
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String firstname;
+  final String lastname;
+  final String username;
+  const MyApp({
+    Key? key,
+    required this.firstname,
+    required this.lastname,
+    required this.username,
+  }) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  List<MarkAtttendanceModel> locations = [];
+  String selecteditems = "16";
+  Future<List<MarkAtttendanceModel>> fetchDrop() async {
+    final response = await http.get(Uri.parse(
+        'http://${Url.ip}:5001/getCurrentClass?EmpNumber=${widget.username}'));
+    if (response.statusCode == 200) {
+      List<MarkAtttendanceModel> Locations =
+          markAtttendanceModelFromJson(response.body);
+      print(response.body);
+      setState(() {
+        locations.addAll(Locations);
+      });
+      print(locations.elementAt(1));
+      return locations;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDrop();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -24,6 +64,52 @@ class _MyAppState extends State<MyApp> {
       ),
       body: Column(
         children: [
+          SizedBox(
+            height: 5,
+          ),
+          Container(
+            height: 50,
+            width: 350,
+            child: DropdownButton(
+              autofocus: true,
+              // hint: Text(
+              //   'Organizations',
+              //   style: TextStyle(
+              //     fontWeight: FontWeight.w900,
+              //     fontSize: 35,
+              //     color: Colors.teal,
+              //   ),
+              // ),
+              value: selecteditems.toString(),
+              onChanged: (String? newValue) {
+                setState(
+                  () {
+                    selecteditems = newValue!;
+                  },
+                );
+              },
+              items: locations.map((item) {
+                return DropdownMenuItem(
+                  child: Text(
+                    item.discipline +
+                        item.semC.toString() +
+                        item.section +
+                        "(" +
+                        item.day +
+                        item.slotStart.toString() +
+                        "-" +
+                        item.slotEnd.toString() +
+                        ")",
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                  value: item.id.toString(),
+                );
+              }).toList(),
+              dropdownColor: Colors.white,
+            ),
+          ),
           Row(
             children: [
               Container(
@@ -42,7 +128,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 height: 40,
                 child: Text(
-                  'Shahid Jamil',
+                  widget.firstname + " " + widget.lastname,
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -69,7 +155,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 height: 40,
                 child: Text(
-                  'BSCS-8B',
+                  "bcs-8B",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -150,7 +236,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 height: 40,
                 child: Text(
-                  '30-11-2021',
+                  formattedDate,
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

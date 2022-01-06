@@ -41,6 +41,8 @@ class _loginpageState extends State<loginpage> {
     super.initState();
   }
 
+  late String fname;
+  late String lname;
   late String uname;
   Future<void> verifylogin() async {
     var res = await http.post(
@@ -71,7 +73,12 @@ class _loginpageState extends State<loginpage> {
         setState(
           () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => dashbord()));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => dashbord(
+                        firstname: data.fname,
+                        lastname: data.lname,
+                        username: uname)));
           },
         );
       }
