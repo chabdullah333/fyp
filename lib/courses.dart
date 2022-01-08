@@ -55,6 +55,7 @@ class _coursebodyState extends State<coursebody> {
   }
 
   late String Coursecode;
+  late String Coursetitle;
   late Future<List<Stenrollcources>> data;
   @override
   void initState() {
@@ -110,12 +111,14 @@ class _coursebodyState extends State<coursebody> {
                               subtitle: Text(snapshot.data![index].title),
                               onTap: () {
                                 Coursecode = snapshot.data![index].code;
+                                Coursetitle = snapshot.data![index].title;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => courseattendance(
                                             username: widget.username,
-                                            coursecode: Coursecode)));
+                                            coursecode: Coursecode,
+                                            coursetitle: Coursetitle)));
                               },
                             ),
                           ],

@@ -40,8 +40,8 @@ class MarkAtttendanceModel {
         section: json["Section"],
         discipline: json["Discipline"],
         day: json["Day"],
-        slotStart: json["SlotStart"].toString(),
-        slotEnd: json["SlotEnd"].toString(),
+        slotStart: json["SlotStart"].split('.')[0],
+        slotEnd: json["SlotEnd"].split('.')[0],
       );
 
   Map<String, dynamic> toJson() => {

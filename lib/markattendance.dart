@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
   final String firstname;
   final String lastname;
   final String username;
+
   const MyApp({
     Key? key,
     required this.firstname,
@@ -26,7 +27,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<MarkAtttendanceModel> locations = [];
-  String selecteditems = "16";
+  String selecteditems = "1";
+
   Future<List<MarkAtttendanceModel>> fetchDrop() async {
     final response = await http.get(Uri.parse(
         'http://${Url.ip}:5001/getCurrentClass?EmpNumber=${widget.username}'));
@@ -44,14 +46,38 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future<List<MarkAtttendanceModel>> dropdownid(String id) async {
+    final response =
+        await http.get(Uri.parse('http://${Url.ip}:5001/dropdownid?id=${id}'));
+    if (response.statusCode == 200) {
+      List<MarkAtttendanceModel> paresd =
+          markAtttendanceModelFromJson(response.body);
+      return paresd;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     fetchDrop();
   }
 
+  String id = "";
+
   @override
   Widget build(BuildContext context) {
+    if (widget.username == 'BIIT190') {
+      selecteditems = '1';
+    }
+    if (widget.username == 'BIIT167') {
+      selecteditems = '16';
+    }
+    if (widget.username == 'BIIT346') {
+      selecteditems = '8';
+    }
+
     var now = new DateTime.now();
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
@@ -85,6 +111,7 @@ class _MyAppState extends State<MyApp> {
                 setState(
                   () {
                     selecteditems = newValue!;
+                    id = selecteditems;
                   },
                 );
               },
@@ -113,134 +140,163 @@ class _MyAppState extends State<MyApp> {
           Row(
             children: [
               Container(
-                height: 40,
-                child: Text(
-                  'Teacher',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
+                height: 210,
+                width: 135,
+                color: Colors.red,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 40,
+                      child: Text(
+                        'Teacher',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      child: Text(
+                        'Class',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      child: Text(
+                        'Subject',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      child: Text(
+                        'Day',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      child: Text(
+                        'Date',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                width: 50,
-              ),
               Container(
-                height: 40,
-                child: Text(
-                  widget.firstname + " " + widget.lastname,
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                height: 40,
-                child: Text(
-                  'Class',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 78,
-              ),
-              Container(
-                height: 40,
-                child: Text(
-                  "bcs-8B",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                height: 40,
-                child: Text(
-                  'Subject',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 56,
-              ),
-              Container(
-                height: 40,
-                child: Text(
-                  'SP',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                height: 40,
-                child: Text(
-                  'Day',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 98,
-              ),
-              Container(
-                height: 40,
-                child: Text(
-                  'Monday',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                height: 40,
-                child: Text(
-                  'Date',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 88,
-              ),
-              Container(
-                height: 40,
-                child: Text(
-                  formattedDate,
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
+                height: 210,
+                width: 225,
+                color: Colors.green,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 40,
+                      child: Text(
+                        widget.firstname + " " + widget.lastname,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 120,
+                      child: FutureBuilder<List<MarkAtttendanceModel>>(
+                        future: dropdownid(id),
+                        key: UniqueKey(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 40,
+                                          child: Text(
+                                            snapshot.data![index].discipline +
+                                                "-" +
+                                                snapshot.data![index].semC
+                                                    .toString() +
+                                                snapshot.data![index].section,
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          child: Text(
+                                            snapshot.data![index].title,
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          child: Text(
+                                            snapshot.data![index].day,
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+
+                          // By default, show a loading spinner.
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      child: Text(
+                        formattedDate,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

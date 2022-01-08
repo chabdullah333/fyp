@@ -84,11 +84,11 @@ class dashbord extends StatelessWidget {
                           TextButton(
                             onPressed: () {},
                             child: Image.asset(
-                              'images/shortattendance.png',
+                              'images/showattendance.png',
                               height: 128,
                             ),
                           ),
-                          Text('Short Attendance'),
+                          Text('Show Attendance'),
                         ],
                       ),
                     ),
@@ -99,17 +99,17 @@ class dashbord extends StatelessWidget {
                         children: [
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => bscs()),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) => bscs()),
+                              // );
                             },
                             child: Image.asset(
-                              'images/showattendance.png',
+                              'images/shortattendance.png',
                               height: 128,
                             ),
                           ),
-                          Text('Show Attendance'),
+                          Text('Complaint'),
                         ],
                       ),
                     ),

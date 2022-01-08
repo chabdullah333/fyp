@@ -7,9 +7,13 @@ import 'package:secondapp/testmark.dart';
 class courseattendance extends StatefulWidget {
   final String coursecode;
   final String username;
-  const courseattendance(
-      {Key? key, required this.username, required this.coursecode})
-      : super(key: key);
+  final String coursetitle;
+  const courseattendance({
+    Key? key,
+    required this.username,
+    required this.coursecode,
+    required this.coursetitle,
+  }) : super(key: key);
 
   @override
   _courseattendanceState createState() => _courseattendanceState();
@@ -24,6 +28,7 @@ class _courseattendanceState extends State<courseattendance> {
     if (response.statusCode == 200) {
       print(widget.username);
       print(widget.coursecode);
+      print(widget.coursetitle);
 
       List<Crsattendance> paresd = crsattendanceFromJson(response.body);
       print(paresd);
@@ -45,7 +50,7 @@ class _courseattendanceState extends State<courseattendance> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Course Attendance",
+          widget.coursetitle,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -110,7 +115,7 @@ class _courseattendanceState extends State<courseattendance> {
                                 Container(
                                   height: 50,
                                   width: 50,
-                                  color: Colors.red,
+                                  color: Colors.green,
                                   child: Center(
                                     child: Text(
                                       snapshot.data![index].status,
