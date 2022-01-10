@@ -43,7 +43,7 @@ class _coursebodyState extends State<coursebody> {
   Future<List<Stenrollcources>> fetchServices() async {
     final response = await http.get(
       Uri.parse(
-          'http://${Url.ip}:5001/SEnrolledcourses?username=${widget.username}'),
+          'http://${Url.ip}:5001/SEnrolledcourses/coursepercentage?username=${widget.username}'),
     );
     if (response.statusCode == 200) {
       List<Stenrollcources> paresd = stenrollcourcesFromJson(response.body);
@@ -103,7 +103,10 @@ class _coursebodyState extends State<coursebody> {
                                 image: AssetImage('images/book (1).png'),
                               ),
                               title: Text(
-                                snapshot.data![index].code,
+                                snapshot.data![index].code +
+                                    ("           ") +
+                                    snapshot.data![index].percent.toString() +
+                                    ("%"),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),

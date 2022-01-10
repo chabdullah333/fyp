@@ -15,19 +15,23 @@ class Stenrollcources {
   Stenrollcources({
     required this.code,
     required this.title,
+    required this.percent,
   });
 
   String code;
   String title;
+  int percent;
 
   factory Stenrollcources.fromJson(Map<String, dynamic> json) =>
       Stenrollcources(
         code: json["Code"],
         title: json["Title"],
+        percent: json["Percent"],
       );
 
   Map<String, dynamic> toJson() => {
         "Code": code,
         "Title": title,
+        "Percent": percent,
       };
 }

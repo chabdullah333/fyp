@@ -105,11 +105,11 @@ class dashbord extends StatelessWidget {
                               // );
                             },
                             child: Image.asset(
-                              'images/shortattendance.png',
+                              'images/complain.png',
                               height: 128,
                             ),
                           ),
-                          Text('Complaint'),
+                          Text('Complain'),
                         ],
                       ),
                     ),

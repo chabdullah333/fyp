@@ -137,7 +137,7 @@ class _loginpageState extends State<loginpage> {
                 const SizedBox(
                   height: 60,
                 ),
-                Image.asset('images/login.png'),
+                Image.asset('images/loginlogo.jpeg'),
               ],
             ),
             SizedBox(

@@ -14,6 +14,7 @@ String markAtttendanceModelToJson(List<MarkAtttendanceModel> data) =>
 class MarkAtttendanceModel {
   MarkAtttendanceModel({
     required this.id,
+    required this.code,
     required this.semC,
     required this.title,
     required this.section,
@@ -24,6 +25,7 @@ class MarkAtttendanceModel {
   });
 
   int id;
+  String code;
   int semC;
   String title;
   String section;
@@ -35,17 +37,19 @@ class MarkAtttendanceModel {
   factory MarkAtttendanceModel.fromJson(Map<String, dynamic> json) =>
       MarkAtttendanceModel(
         id: json["Id"],
+        code: json["Code"],
         semC: json["SemC"],
         title: json["Title"],
         section: json["Section"],
         discipline: json["Discipline"],
         day: json["Day"],
-        slotStart: json["SlotStart"].split('.')[0],
-        slotEnd: json["SlotEnd"].split('.')[0],
+        slotStart: json["SlotStart"],
+        slotEnd: json["SlotEnd"],
       );
 
   Map<String, dynamic> toJson() => {
         "Id": id,
+        "Code": code,
         "SemC": semC,
         "Title": title,
         "Section": section,

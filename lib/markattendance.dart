@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:secondapp/test.dart';
 import 'package:secondapp/testmark.dart';
+import 'package:secondapp/verifyattendance.dart';
 
 import 'Model/MarkAtttendanceModel.dart';
 
@@ -65,6 +66,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   String id = "";
+  String courseno = "";
+  String sect = "";
+  String discip = "";
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +146,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 height: 210,
                 width: 135,
-                color: Colors.red,
+                // color: Colors.red,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -205,7 +209,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 height: 210,
                 width: 225,
-                color: Colors.green,
+                // color: Colors.green,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -234,6 +238,9 @@ class _MyAppState extends State<MyApp> {
                                 shrinkWrap: true,
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (context, index) {
+                                  courseno = snapshot.data![index].code;
+                                  sect = snapshot.data![index].section;
+                                  discip = snapshot.data![index].discipline;
                                   return Container(
                                     child: Column(
                                       crossAxisAlignment:
@@ -242,11 +249,11 @@ class _MyAppState extends State<MyApp> {
                                         Container(
                                           height: 40,
                                           child: Text(
-                                            snapshot.data![index].discipline +
+                                            discip +
                                                 "-" +
                                                 snapshot.data![index].semC
                                                     .toString() +
-                                                snapshot.data![index].section,
+                                                sect,
                                             style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.bold,
@@ -256,7 +263,9 @@ class _MyAppState extends State<MyApp> {
                                         Container(
                                           height: 40,
                                           child: Text(
-                                            snapshot.data![index].title,
+                                            snapshot.data![index].title +
+                                                ("-") +
+                                                courseno,
                                             style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.bold,
@@ -409,7 +418,19 @@ class _MyAppState extends State<MyApp> {
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VerifyAtt(
+                    username: widget.username,
+                    coursecode: courseno,
+                    section: sect,
+                    discipline: discip,
+                  ),
+                ),
+              );
+            },
             child: Container(
               child: Text(
                 'Mark Attendance',
