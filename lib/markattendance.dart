@@ -264,8 +264,9 @@ class _MyAppState extends State<MyApp> {
                                           height: 40,
                                           child: Text(
                                             snapshot.data![index].title +
-                                                ("-") +
-                                                courseno,
+                                                ("(") +
+                                                courseno +
+                                                (")"),
                                             style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.bold,

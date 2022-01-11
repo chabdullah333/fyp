@@ -8,18 +8,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:secondapp/testmark.dart';
 
-// class org {
-//   bool status;
-//   org({
-//     required this.status,
-//   });
-//   factory org.fromJson(Map<String, dynamic> parsedJson) {
-//     return org(
-//       status: parsedJson['status'],
-//     );
-//   }
-// }
-
 class loginpage extends StatefulWidget {
   const loginpage({Key? key}) : super(key: key);
   @override
@@ -60,15 +48,6 @@ class _loginpageState extends State<loginpage> {
       print(res.body);
       Emptr data = emptrFromJson(res.body);
       print(data);
-      // print(data['username'].toString());
-      // int status = data['status'];
-      //print(userrname);
-      // final payload = {
-      //   data: ['status'].toString()
-      // };
-      //print(payload);
-      // String type;
-      // type = data.type;
       if (data.type == 'T') {
         setState(
           () {
@@ -90,38 +69,9 @@ class _loginpageState extends State<loginpage> {
                   builder: (context) => coursebody(username: uname)));
         });
       }
-
-      // if (data["error"]) {
-      //   setState(() {
-      //     sending = false;
-      //     error = true;
-      //     msg = data["message"];
-      //   });
-      // } else {
-      //   usernameController.text = '';
-      //   passwordController.text = '';
-      //   setState(() {
-      //     sending = false;
-      //     success = true;
-      //   });
-      // }
     } else {
       showAlertDialog(context);
     }
-    // if (res.statusCode == 103) {
-    //   setState(() {
-    //     error = true;
-    //     msg = "Error during sending data";
-    //     sending = false;
-    //   });
-    // }
-    // else {
-    //   setState(() {
-    //     error = true;
-    //     msg = "Error during sending data";
-    //     sending = false;
-    //   });
-    // }
   }
 
   @override
@@ -184,12 +134,6 @@ class _loginpageState extends State<loginpage> {
                   child: ElevatedButton(
                     onPressed: () {
                       verifylogin();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => dashbord()),
-                      // );
-
-                      //setState(() {});
                     },
                     child: Text(
                       'Login',
