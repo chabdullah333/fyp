@@ -8,7 +8,6 @@ import 'package:secondapp/testmark.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class image extends StatefulWidget {
@@ -19,10 +18,31 @@ class image extends StatefulWidget {
 }
 
 class _imageState extends State<image> {
+  TextEditingController txtcontroller = TextEditingController();
   File? image;
   File? image2;
+  String username = "Abdullah";
+  late String password = "abc123";
   String url = "http://${Url.ip}:5001/img";
-  Future pickImage() async {
+
+  Future gallerypickImage1() async {
+    try {
+      print('image picking');
+
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image... $e');
+    }
+  }
+
+  Future camerapickImage1() async {
     try {
       print('image picking');
 
@@ -39,7 +59,24 @@ class _imageState extends State<image> {
     }
   }
 
-  Future pickImage2() async {
+  Future gallerypickImage2() async {
+    try {
+      print('image picking');
+
+      final image2 = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image2 == null) return;
+
+      final imageTemporary = File(image2.path);
+      setState(() {
+        this.image2 = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image... $e');
+    }
+  }
+
+  Future camerapickImage2() async {
     try {
       print('image picking');
 
@@ -57,36 +94,60 @@ class _imageState extends State<image> {
   }
 
   Future<void> verifyimg() async {
+    /////////////http//////////
     // var res = await http.post(
     //   Uri.parse(url),
-    //   headers: <File, File>{
+    //   headers: <String, String>{
     //     'Content-Type': 'application/json; charset=UTF-8',
     //   },
-    //   body: jsonEncode(<File, File>{
-    //     "image1": image,
-    //     // 'image2': image2,
+    //   body: jsonEncode(<String, String>{
+    //     'username': txtcontroller.text,
+    //     'image1': image!.path.toString(),
+    //     "image2": image2!.path.toString(),
     //   }),
     // );
+    // if (res.statusCode == 200) {
+    //   print(res.body);
+    // }
+    //////////http end//////////
+
+    //////////////formdata//////////////////
+    // FormData data = FormData.fromMap({
+    //   "image1": await MultipartFile.fromFile(
+    //     image!.path,
+    //     filename: 'image1.jpg',
+    //   ),
+    //   "image2": await MultipartFile.fromFile(
+    //     image2!.path,
+    //     filename: "image2.jpg",
+    //   ),
+    //   'username': txtcontroller.text,
+    // });
+    //
+    // Dio dio = new Dio();
+    // dio.options.headers["contentType"] = "multipart/form-data";
+    // dio
+    //     .post(url, data: data)
+    //     .then((response) => print(response))
+    //     .catchError((error) => print(error));
+
+//////////////////////formdata end/////////////
 
     // my code
 
-    // var request = http.MultipartRequest("POST", Uri.parse(url));
-    // request.fields['title'] = "dummyimage";
-    // request.headers['Authorization'] = "";
-    // var picture = http.MultipartFile.fromBytes(
-    //     'image', (await rootBundle.load(basename)).buffer.asUint8List(),
-    //     filename: "filefile.png");
-    //
-    // request.files.add(picture);
-    //
-    // var response = await request.send();
+    ///////////////////////////Multipart code//////////////////////
+    Map<String, String> fields = <String, String>{
+      "username": username.toString(),
+    };
 
-    // my code 2
+    var request = http.MultipartRequest(
+        'POST', Uri.parse("http://${Url.ip}:5001/Proceed"));
 
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-
+    // final headers = <String, String>{};
+    // headers["contentType"] = "application/json; charset=UTF-8";
+    // request.fields['username'] = txtcontroller.text;
+    // request.headers.addAll(headers);
     // for image 1
-
     Uint8List data = await this.image!.readAsBytes();
     List<int> list = data.cast();
 
@@ -101,35 +162,40 @@ class _imageState extends State<image> {
 
     request.files.add(picture1);
     request.files.add(picture2);
+    fields.forEach((k, v) => request.fields[k] = v);
+    request.fields.addAll(fields);
 
-    var resp = await request.send();
-    // with multi part
+    request.headers.addAll(
+      {
+        r'Content-Type': 'application/json; charset=UTF-8',
+        r'Content-Type': 'multipart/form-data',
+      },
+    );
+    var abc;
+    abc = [];
+    // var resp = await request.send();
+    request.send().then((result) async {
+      http.Response.fromStream(result).then((response) {
+        if (response.statusCode == 200) {
+          print("Uploaded! ");
+          print('response.body ' + response.body);
+          abc = response.body;
+        }
+        return response.body;
+      });
+    });
 
-    // Dio dio = Dio();
-    // ByteData byteData = image!.readAsBytesSync() as ByteData;
-    // List<int> imageData = byteData.buffer.asInt8List();
-    //
-    // MultipartFile multipartFile = MultipartFile.fromBytes(
-    //   imageData,
-    //   filename: "img.png",
-    // );
-    //
-    // FormData formData = FormData.fromMap({
-    //   "name": multipartFile,
+    // resp.stream.transform(utf8.decoder).listen((value) {
+    //   print(value);
     // });
-    //
-    // var response = await dio.post(url, data: formData);
-
-    // if (res == 200) {
-    //   print(res.body) ;
-    // }
-  }
+    ///////////////////////////multipartrequest end
+  } ////////////////verifyimg
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('image picker'),
+        title: Text('image picker code'),
       ),
       body: Column(
         children: [
@@ -158,7 +224,7 @@ class _imageState extends State<image> {
                 ),
               ),
               SizedBox(
-                width: 30,
+                width: 50,
               ),
               Card(
                 elevation: 4,
@@ -190,28 +256,53 @@ class _imageState extends State<image> {
           Row(
             children: [
               ElevatedButton(
-                onPressed: () => pickImage(),
-                child: Text("Upload image 1"),
+                onPressed: () => gallerypickImage1(),
+                child: Text("Gallery pic 1"),
+              ),
+              SizedBox(
+                width: 20,
               ),
               ElevatedButton(
-                onPressed: () => pickImage2(),
-                child: Text("Upload image 2"),
+                onPressed: () => gallerypickImage2(),
+                child: Text("Gallery pic 2"),
               ),
             ],
           ),
           SizedBox(
-            height: 20,
+            height: 10,
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  camerapickImage1();
+                },
+                child: Text("Camera pic 1"),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  camerapickImage2();
+                },
+                child: Text("Camera pic 2"),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 50,
           ),
           Row(
             children: [
               Container(
+                height: 67,
                 width: 300,
                 child: TextField(
-                  // controller: passwordController,
-                  obscureText: true,
+                  controller: txtcontroller,
                   cursorColor: Colors.red,
                   decoration: InputDecoration(
-                    labelText: 'Get images address',
+                    labelText: 'abc',
                     labelStyle: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -224,7 +315,7 @@ class _imageState extends State<image> {
             ],
           ),
           SizedBox(
-            height: 20,
+            height: 80,
           ),
           Row(
             children: [
@@ -239,7 +330,7 @@ class _imageState extends State<image> {
                       print(image2);
                     },
                     child: Text(
-                      'onpressed',
+                      'Mark Attendance',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

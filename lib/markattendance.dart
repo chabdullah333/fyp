@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<List<MarkAtttendanceModel>> fetchDrop() async {
     final response = await http.get(Uri.parse(
-        'http://${Url.ip}:5001/getCurrentClass?EmpNumber=${widget.username}'));
+        'http://${Url.ip}:5001/TEnrolledcourses/markattendance?EmpNumber=${widget.username}'));
     if (response.statusCode == 200) {
       List<MarkAtttendanceModel> Locations =
           markAtttendanceModelFromJson(response.body);
@@ -48,8 +48,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<List<MarkAtttendanceModel>> dropdownid(String id) async {
-    final response =
-        await http.get(Uri.parse('http://${Url.ip}:5001/dropdownid?id=${id}'));
+    final response = await http.get(Uri.parse(
+        'http://${Url.ip}:5001/TEnrolledcourses/markattendance/dropdownid?id=${id}'));
     if (response.statusCode == 200) {
       List<MarkAtttendanceModel> paresd =
           markAtttendanceModelFromJson(response.body);
@@ -355,58 +355,51 @@ class _MyAppState extends State<MyApp> {
             ],
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+              IconButton(
+                icon: const Icon(
+                  Icons.camera_alt_outlined,
+                  size: 50,
                 ),
+                color: Colors.red,
                 onPressed: () {},
-                child: Container(
-                  child: Text(
-                    'Camera',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  width: 80,
-                  height: 30,
-                ),
               ),
-              // SizedBox(
-              //   width: 80,
-              // ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+              SizedBox(
+                width: 30,
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.image,
+                  size: 50,
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Multiimage()),
-                  );
-                },
-                child: Container(
-                  child: Text(
-                    'Gallery',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  width: 80,
-                  height: 30,
+                color: Colors.red,
+                onPressed: () {},
+              ),
+              SizedBox(
+                width: 75,
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.camera_alt_outlined,
+                  size: 50,
                 ),
+                color: Colors.red,
+                onPressed: () {},
+              ),
+              SizedBox(
+                width: 30,
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.image,
+                  size: 50,
+                ),
+                color: Colors.red,
+                onPressed: () {},
               ),
             ],
           ),
