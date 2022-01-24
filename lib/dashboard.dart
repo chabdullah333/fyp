@@ -82,7 +82,13 @@ class dashbord extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => showattend(),
+                                  ));
+                            },
                             child: Image.asset(
                               'images/showattendance.png',
                               height: 128,

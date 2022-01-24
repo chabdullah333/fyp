@@ -4,11 +4,15 @@ import 'dart:io' as Io;
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondapp/Model/onclickmarkresponsemodel.dart';
+import 'package:secondapp/testimage.dart';
 import 'package:secondapp/testmark.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'Model/todayattendancelist.dart';
 
 class image extends StatefulWidget {
   const image({Key? key}) : super(key: key);
@@ -18,6 +22,7 @@ class image extends StatefulWidget {
 }
 
 class _imageState extends State<image> {
+  List<Onclickmarkresponsemodel> parsed = [];
   TextEditingController txtcontroller = TextEditingController();
   File? image;
   File? image2;
@@ -178,17 +183,30 @@ class _imageState extends State<image> {
       http.Response.fromStream(result).then((response) {
         if (response.statusCode == 200) {
           print("Uploaded! ");
-          print('response.body ' + response.body);
-          abc = response.body;
+          // print('response.body ' + response.body);
+          // abc = response.body;
+          parsed = onclickmarkresponsemodelFromJson(response.body);
+          print(parsed);
+          // List<Todayattendancelist> paresd =
+          //     todayattendancelistFromJson(response.body) as List<Todayattendancelist>;
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => testimg(
+                  verify: parsed,
+                ),
+              ));
         }
         return response.body;
       });
     });
-
+    print(data);
     // resp.stream.transform(utf8.decoder).listen((value) {
     //   print(value);
     // });
     ///////////////////////////multipartrequest end
+    // late Future<List<Todayattendancelist>> data123;
   } ////////////////verifyimg
 
   @override
@@ -326,8 +344,13 @@ class _imageState extends State<image> {
                   child: ElevatedButton(
                     onPressed: () {
                       verifyimg();
-                      print(image);
-                      print(image2);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => testimg(
+                      //         verify: parsed,
+                      //       ),
+                      //     ));
                     },
                     child: Text(
                       'Mark Attendance',
