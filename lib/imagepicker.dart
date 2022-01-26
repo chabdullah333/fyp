@@ -98,6 +98,8 @@ class _imageState extends State<image> {
     }
   }
 
+  List<String> regno = [];
+  List<String> status = [];
   Future<void> verifyimg() async {
     /////////////http//////////
     // var res = await http.post(
@@ -189,12 +191,19 @@ class _imageState extends State<image> {
           print(parsed);
           // List<Todayattendancelist> paresd =
           //     todayattendancelistFromJson(response.body) as List<Todayattendancelist>;
-
+          for (int i = 0; i < parsed.length; i++) {
+            regno.add(parsed[i].regNo);
+            status.add(parsed[i].attendStatus);
+            print(regno.elementAt(i));
+          }
+          print(regno.elementAt(0));
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => testimg(
                   verify: parsed,
+                  regno: regno,
+                  status: status,
                 ),
               ));
         }

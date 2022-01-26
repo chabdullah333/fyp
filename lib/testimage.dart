@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,16 +8,76 @@ import 'testmark.dart';
 
 class testimg extends StatefulWidget {
   final List<Onclickmarkresponsemodel> verify;
-  const testimg({Key? key, required this.verify}) : super(key: key);
+  final List<String> regno;
+  final List<String> status;
+  const testimg(
+      {Key? key,
+      required this.verify,
+      required this.regno,
+      required this.status})
+      : super(key: key);
 
   @override
   _testimg createState() => _testimg();
 }
 
 class _testimg extends State<testimg> {
-  // late List<Onclickmarkresponsemodel> abc = widget.verify;
+  String url = "http://${Url.ip}:5001/saveattendancelistinDB";
+  // late Map<String, String> data;
+  // final Map<String, dynamic> data = new Map<String, dynamic>();
+  // // late Future<List<VerifyAtttendanceModel>> data;
+  // verifyattendance() async {
+  //   // final uri = url;
+  //
+  //   for (int i = 0; i < regnumber.length; i++) {
+  //     data.addAll({
+  //       data["regno[$i]"]: regnumber[i].toString(),
+  //     });
+  //   }
+  //   for (int i = 0; i < statuscode.length; i++) {
+  //     data.addAll({
+  //       data["regno[$i]"]: statuscode[i].toString(),
+  //     });
+  //   }
+  //
+  //   http.Response response = await http.post(
+  //     Uri.parse(url),
+  //     body: data,
+  //   );
+  //   if (response.statusCode == 200) {
+  //     print("ho gya");
+  //   } else {
+  //     print("nhi huwa");
+  //   }
+  // }
+  Future<List<Onclickmarkresponsemodel>> verifyattendance() async {
+    final response = await http.get(
+      Uri.parse(
+          'http://${Url.ip}:5001/saveattendancelistinDB?regno=${widget.regno}&status=${widget.status}'),
+    );
+    if (response.statusCode == 200) {
+      List<Onclickmarkresponsemodel> paresd =
+          onclickmarkresponsemodelFromJson(response.body);
+      return paresd;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+  // Future<void> verifyattendance() async {
+  //   print(regnumber);
+  //   print(statuscode);
+  //   var res = await http.post(
+  //     Uri.parse(url),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; crset=UTF-8',
+  //     },
+  //     body: jsonEncode(<String, dynamic>{
+  //       "regno": regnumber,
+  //       "status": statuscode,
+  //     }),
+  //   );
+  // }
 
-  // late Future<List<VerifyAtttendanceModel>> data;
   @override
   void initState() {
     super.initState();
@@ -69,7 +131,8 @@ class _testimg extends State<testimg> {
                                             height: 20,
                                           ),
                                           Text(
-                                            widget.verify[index].regNo,
+                                            widget.verify[index].regNo
+                                                .toString(),
                                             style: TextStyle(fontSize: 10),
                                           ),
                                           Text(
@@ -105,8 +168,9 @@ class _testimg extends State<testimg> {
                                       height: 50,
                                       color: Colors.greenAccent,
                                       child: Center(
-                                        child: Text(
-                                            widget.verify[index].attendStatus),
+                                        child: Text(widget
+                                            .verify[index].attendStatus
+                                            .toString()),
                                       ),
                                     ),
                                   ],
@@ -120,63 +184,27 @@ class _testimg extends State<testimg> {
                   },
                 ),
               ),
+              Container(
+                child: ButtonTheme(
+                  height: 40,
+                  disabledColor: Colors.blue,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      verifyattendance();
+                    },
+                    child: Text(
+                      'Verify Attendance',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-        // Padding(
-        //   padding: EdgeInsets.all(10),
-        //   child: SingleChildScrollView(
-        //     child: Column(
-        //       children: [
-        //         Card(
-        //           color: Colors.redAccent,
-        //           margin: EdgeInsets.all(5),
-        //           child: Container(
-        //             height: 80,
-        //             child: Row(
-        //               children: [
-        //                 Icon(
-        //                   Icons.person_outlined,
-        //                   size: 50,
-        //                   color: Colors.white,
-        //                 ),
-        //                 SizedBox(
-        //                   height: 32,
-        //                   width: 90,
-        //                   child: Column(
-        //                     children: [
-        //                       Text("18-ARID-0159"),
-        //                       Text("Siraj Ali"),
-        //                     ],
-        //                   ),
-        //                 ),
-        //                 SizedBox(
-        //                   height: 32,
-        //                   width: 40,
-        //                   child: Column(
-        //                     children: [
-        //                       Text("9/18"),
-        //                       Text("50%"),
-        //                     ],
-        //                   ),
-        //                 ),
-        //                 SizedBox(
-        //                   width: 20,
-        //                 ),
-        //                 Container(
-        //                   width: 40,
-        //                   height: 50,
-        //                   color: Colors.greenAccent,
-        //                   child: Center(child: Text("P")),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }
