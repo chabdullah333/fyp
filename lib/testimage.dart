@@ -22,6 +22,7 @@ class testimg extends StatefulWidget {
 }
 
 class _testimg extends State<testimg> {
+  late String attendid;
   String url = "http://${Url.ip}:5001/saveattendancelistinDB";
   // late Map<String, String> data;
   // final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -50,15 +51,16 @@ class _testimg extends State<testimg> {
   //     print("nhi huwa");
   //   }
   // }
-  Future<List<Onclickmarkresponsemodel>> verifyattendance() async {
+  Future<String> verifyattendance() async {
     final response = await http.get(
       Uri.parse(
-          'http://${Url.ip}:5001/saveattendancelistinDB?regno=${widget.regno}&status=${widget.status}'),
+          "http://${Url.ip}:5001/saveattendancelistinDB?regno=${widget.regno}&status=${widget.status}&attendid=${attendid}"),
     );
     if (response.statusCode == 200) {
-      List<Onclickmarkresponsemodel> paresd =
-          onclickmarkresponsemodelFromJson(response.body);
-      return paresd;
+      print(response.body);
+      // List<Onclickmarkresponsemodel> paresd =
+      //     onclickmarkresponsemodelFromJson(response.body);
+      return "OK";
     } else {
       throw Exception('Failed to load album');
     }
@@ -104,6 +106,7 @@ class _testimg extends State<testimg> {
                   shrinkWrap: true,
                   itemCount: widget.verify.length,
                   itemBuilder: (context, index) {
+                    attendid = widget.verify[index].attendanceid.toString();
                     return Padding(
                       padding: EdgeInsets.all(10),
                       child: SingleChildScrollView(
@@ -166,7 +169,7 @@ class _testimg extends State<testimg> {
                                     Container(
                                       width: 40,
                                       height: 50,
-                                      color: Colors.greenAccent,
+                                      color: Colors.redAccent,
                                       child: Center(
                                         child: Text(widget
                                             .verify[index].attendStatus
