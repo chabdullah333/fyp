@@ -83,14 +83,14 @@ class _courseattendanceState extends State<courseattendance> {
                               children: [
                                 Container(
                                   height: 50,
-                                  width: 80,
+                                  width: 40,
                                   child: Image(
                                     image: AssetImage('images/book (1).png'),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                // SizedBox(
+                                //   width: 5,
+                                // ),
                                 Text(
                                   snapshot.data![index].date.toString(),
                                   style: TextStyle(
@@ -98,7 +98,7 @@ class _courseattendanceState extends State<courseattendance> {
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 35,
+                                  width: 20,
                                 ),
                                 Container(
                                   width: 40,
@@ -106,25 +106,42 @@ class _courseattendanceState extends State<courseattendance> {
                                     snapshot.data![index].venue,
                                     style: TextStyle(
                                       fontSize: 20,
+                                      color: Colors.black87,
                                     ),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 35,
                                 ),
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  color: Colors.green,
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data![index].status,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
+                                Center(
+                                  child: Text(
+                                    snapshot.data![index].status,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color:
+                                          (snapshot.data![index].status == 'A')
+                                              ? Colors.redAccent
+                                              : Colors.green,
                                     ),
                                   ),
                                 ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.red,
+                                    onSurface: Colors.red,
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Challenge',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),

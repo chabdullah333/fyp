@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:secondapp/Model/onclickmarkresponsemodel.dart';
+import 'package:secondapp/dashboard.dart';
 import 'testmark.dart';
 
 class testimg extends StatefulWidget {
@@ -58,6 +59,11 @@ class _testimg extends State<testimg> {
     );
     if (response.statusCode == 200) {
       print(response.body);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => dashbord(lastname: '', firstname: '', username: '',),
+      //   ),);
       // List<Onclickmarkresponsemodel> paresd =
       //     onclickmarkresponsemodelFromJson(response.body);
       return "OK";
@@ -166,14 +172,24 @@ class _testimg extends State<testimg> {
                                     SizedBox(
                                       width: 5,
                                     ),
-                                    Container(
-                                      width: 40,
-                                      height: 50,
-                                      color: Colors.redAccent,
-                                      child: Center(
-                                        child: Text(widget
-                                            .verify[index].attendStatus
-                                            .toString()),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          (widget.status[index] == 'A')
+                                              ? (widget.status[index] = 'P')
+                                              : (widget.status[index] = 'A');
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 40,
+                                        height: 50,
+                                        color: (widget.status[index] == 'A')
+                                            ? Colors.redAccent
+                                            : Colors.green,
+                                        child: Center(
+                                          child: Text(
+                                              widget.status[index].toString()),
+                                        ),
                                       ),
                                     ),
                                   ],

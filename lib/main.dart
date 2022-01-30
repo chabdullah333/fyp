@@ -9,6 +9,6 @@ import 'package:secondapp/verifyattendance.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: image(),
+    home: loginpage(),
   ));
 }
