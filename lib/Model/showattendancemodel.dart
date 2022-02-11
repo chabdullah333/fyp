@@ -1,49 +1,41 @@
-class datemodal {
-  List Date;
+// To parse this JSON data, do
+//
+//     final showattendancemodel = showattendancemodelFromJson(jsonString);
 
-  datemodal({
-    required this.Date,
+import 'dart:convert';
+
+List<Showattendancemodel> showattendancemodelFromJson(String str) =>
+    List<Showattendancemodel>.from(
+        json.decode(str).map((x) => Showattendancemodel.fromJson(x)));
+
+String showattendancemodelToJson(List<Showattendancemodel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Showattendancemodel {
+  Showattendancemodel({
+    required this.attendanceStatuses,
+    required this.regNo,
+    required this.name,
+    required this.ind,
   });
 
-  factory datemodal.fromJson(Map<String, dynamic> json) {
-    return datemodal(
-      Date: json['Date'].toList(),
-    );
-  }
-}
+  String attendanceStatuses;
+  String regNo;
+  String name;
+  String ind;
 
-class statusmodal {
-  List status;
+  factory Showattendancemodel.fromJson(Map<String, dynamic> json) =>
+      Showattendancemodel(
+        attendanceStatuses: json["AttendanceStatuses"],
+        regNo: json["RegNo"],
+        name: json["Name"],
+        ind: json["Ind"],
+      );
 
-  statusmodal({
-    required this.status,
-  });
-
-  factory statusmodal.fromJson(Map<String, dynamic> json) {
-    return statusmodal(
-      status: json['Status'].toList(),
-    );
-  }
-}
-
-class showattendancemodel {
-  String RegNo;
-  String Name;
-  datemodal date;
-  statusmodal status;
-
-  showattendancemodel({
-    required this.RegNo,
-    required this.Name,
-    required this.date,
-    required this.status,
-  });
-
-  factory showattendancemodel.fromJson(Map<String, dynamic> json) {
-    return showattendancemodel(
-        RegNo: json['Reg_no'].toString(),
-        Name: json['Fullname'],
-        date: datemodal.fromJson(json['Date']),
-        status: statusmodal.fromJson(json['Status']));
-  }
+  Map<String, dynamic> toJson() => {
+        "AttendanceStatuses": attendanceStatuses,
+        "RegNo": regNo,
+        "Name": name,
+        "Ind": ind,
+      };
 }

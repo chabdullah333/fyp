@@ -5,17 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:secondapp/Model/onclickmarkresponsemodel.dart';
 import 'package:secondapp/dashboard.dart';
+import 'package:secondapp/login.dart';
 import 'testmark.dart';
 
 class testimg extends StatefulWidget {
   final List<Onclickmarkresponsemodel> verify;
   final List<String> regno;
   final List<String> status;
+  final String firstname;
+  final String lastname;
+  final String username;
   const testimg(
       {Key? key,
       required this.verify,
       required this.regno,
-      required this.status})
+      required this.status,
+      required this.firstname,
+      required this.lastname,
+      required this.username})
       : super(key: key);
 
   @override
@@ -23,6 +30,9 @@ class testimg extends StatefulWidget {
 }
 
 class _testimg extends State<testimg> {
+  late String fname = widget.firstname;
+  late String lname = widget.lastname;
+  late String uname = widget.username;
   late String attendid;
   String url = "http://${Url.ip}:5001/saveattendancelistinDB";
   // late Map<String, String> data;
@@ -59,11 +69,13 @@ class _testimg extends State<testimg> {
     );
     if (response.statusCode == 200) {
       print(response.body);
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => dashbord(lastname: '', firstname: '', username: '',),
-      //   ),);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => loginpage(),
+        ),
+      );
       // List<Onclickmarkresponsemodel> paresd =
       //     onclickmarkresponsemodelFromJson(response.body);
       return "OK";
@@ -188,7 +200,11 @@ class _testimg extends State<testimg> {
                                             : Colors.green,
                                         child: Center(
                                           child: Text(
-                                              widget.status[index].toString()),
+                                            widget.status[index].toString(),
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),

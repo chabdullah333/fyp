@@ -38,6 +38,9 @@ class _MyAppState extends State<MyApp> {
   String courseno = "";
   String sect = "";
   String discip = "";
+  late String fname = widget.firstname;
+  late String lname = widget.lastname;
+  late String uname = widget.username;
   List<Onclickmarkresponsemodel> parsed = [];
   List<MarkAtttendanceModel> locations = [];
   String selecteditems = "1";
@@ -278,6 +281,9 @@ class _MyAppState extends State<MyApp> {
                 verify: parsed,
                 regno: regno,
                 status: status,
+                firstname: fname,
+                lastname: lname,
+                username: uname,
               ),
             ),
           );
@@ -307,13 +313,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.username == 'BIIT190') {
+    if (widget.username.toLowerCase() == 'biit190') {
       selecteditems = '1';
     }
-    if (widget.username == 'BIIT167') {
+    if (widget.username.toLowerCase() == 'biit167') {
       selecteditems = '16';
     }
-    if (widget.username == 'BIIT346') {
+    if (widget.username.toLowerCase() == 'biit346') {
       selecteditems = '8';
     }
 
@@ -588,7 +594,7 @@ class _MyAppState extends State<MyApp> {
                             fit: BoxFit.cover,
                           )
                         : Image.asset(
-                            'images/showattendance.png',
+                            'images/gallery.png',
                             height: 140,
                             width: 120,
                           ),
@@ -612,7 +618,7 @@ class _MyAppState extends State<MyApp> {
                             fit: BoxFit.cover,
                           )
                         : Image.asset(
-                            'images/showattendance.png',
+                            'images/gallery.png',
                             height: 140,
                             width: 120,
                           ),

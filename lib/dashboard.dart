@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:secondapp/classes.dart';
+import 'package:secondapp/classesshowattendance.dart';
+import 'package:secondapp/dropdowndatatesting.dart';
 import 'package:secondapp/markattendance.dart';
 import 'package:secondapp/showattendance.dart';
 
@@ -84,10 +86,12 @@ class dashbord extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => showattend(),
-                                  ));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => classesshowattendance(
+                                          empname: username,
+                                        )),
+                              );
                             },
                             child: Image.asset(
                               'images/showattendance.png',
@@ -107,7 +111,7 @@ class dashbord extends StatelessWidget {
                             onPressed: () {
                               // Navigator.push(
                               //   context,
-                              //   MaterialPageRoute(builder: (context) => bscs()),
+                              //   MaterialPageRoute(builder: (context) => test()),
                               // );
                             },
                             child: Image.asset(

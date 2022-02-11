@@ -18,21 +18,35 @@ class _showattendState extends State<showattend> {
   final String semc = '8';
   final String Section = 'B';
   final String empno = 'BIIT167';
-  Future<List<showattendancemodel>> showkro() async {
+  late List venue = [];
+  Future<List<Showattendancemodel>> showkro() async {
     final response = await http.get(
       Uri.parse(
-          'http://${Url.ip}:5001/getAttendanceList?CourseNumber=${courseno}&Discipline=${discipline}&SemC=${semc}&Section=${Section}&EmpNumber=${empno}'),
+          'http://${Url.ip}:5001/getAttendanceList/sirajcode?CourseNumber=${courseno}&Discipline=${discipline}&SemC=${semc}&Section=${Section}&EmpNumber=${empno}'),
     );
     if (response.statusCode == 200) {
-      List<showattendancemodel> paresd = json.decode(response.body);
+      List<Showattendancemodel> paresd =
+          showattendancemodelFromJson(response.body);
       print(paresd);
       return paresd;
     } else {
       throw Exception('Failed to load album');
     }
   }
+  // Future<List<Showattendancemodel>> showkro() async {
+  //   final response = await http.get(
+  //     Uri.parse(
+  //         'http://${Url.ip}:5001/getAttendanceList/sirajcode?CourseNumber=${courseno}&Discipline=${discipline}&SemC=${semc}&Section=${Section}&EmpNumber=${empno}'),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     print(response.body);
+  //     return showkro();
+  //   } else {
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
 
-  late Future<List<showattendancemodel>> data;
+  late Future<List<Showattendancemodel>> data;
   @override
   void initState() {
     super.initState();
@@ -51,7 +65,7 @@ class _showattendState extends State<showattend> {
         child: Column(
           children: [
             Container(
-              child: FutureBuilder<List<showattendancemodel>>(
+              child: FutureBuilder<List<Showattendancemodel>>(
                 future: data,
                 key: UniqueKey(),
                 builder: (context, snapshot) {
@@ -61,56 +75,33 @@ class _showattendState extends State<showattend> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
+                        final List<String> statuses =
+                            snapshot.data![index].attendanceStatuses.split("#");
+
+                        // venue = snapshot.data![0].attendanceStatuses;
                         return Container(
-                          width: 350,
-                          height: 80,
-                          child: Card(
-                            child: Row(
+                          child: SingleChildScrollView(
+                            child: Table(
+                              border: TableBorder
+                                  .all(), // Allows to add a border decoration around your table
+                              columnWidths: {
+                                0: FixedColumnWidth(25.0),
+                                1: FixedColumnWidth(140.0),
+                              },
                               children: [
-                                Container(
-                                  height: 50,
-                                  width: 80,
-                                  child: Image(
-                                    image: AssetImage('images/book (1).png'),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  snapshot.data![index].RegNo.toString(),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 35,
-                                ),
-                                Container(
-                                  width: 40,
-                                  child: Text(
-                                    snapshot.data![index].Name,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 35,
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  color: Colors.green,
-                                  child: Center(
-                                    child: Text(
-                                      snapshot.data![index].date.toString(),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                TableRow(children: [
+                                  Text(snapshot.data![index].ind),
+                                  Text(snapshot.data![index].regNo +
+                                      "\n" +
+                                      snapshot.data![index].name),
+                                  Text(statuses[0]),
+                                  Text(statuses[1]),
+                                  Text(statuses[2]),
+                                  Text(statuses[3]),
+                                  Text(statuses[4]),
+                                  Text(statuses[5]),
+                                  Text(statuses[6]),
+                                ]),
                               ],
                             ),
                           ),

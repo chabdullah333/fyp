@@ -116,12 +116,14 @@ class _coursebodyState extends State<coursebody> {
                                 Coursecode = snapshot.data![index].code;
                                 Coursetitle = snapshot.data![index].title;
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => courseattendance(
-                                            username: widget.username,
-                                            coursecode: Coursecode,
-                                            coursetitle: Coursetitle)));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => courseattendance(
+                                        username: widget.username,
+                                        coursecode: Coursecode,
+                                        coursetitle: Coursetitle),
+                                  ),
+                                );
                               },
                             ),
                           ],
