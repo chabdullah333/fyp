@@ -6,6 +6,8 @@ import 'package:secondapp/dropdowndatatesting.dart';
 import 'package:secondapp/markattendance.dart';
 import 'package:secondapp/showattendance.dart';
 
+import 'ComplainTeacherSide.dart';
+
 class dashbord extends StatelessWidget {
   final String firstname;
   final String lastname;
@@ -109,10 +111,13 @@ class dashbord extends StatelessWidget {
                         children: [
                           TextButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => test()),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => teacherComplain(
+                                          teacherregno: username,
+                                        )),
+                              );
                             },
                             child: Image.asset(
                               'images/complain.png',
