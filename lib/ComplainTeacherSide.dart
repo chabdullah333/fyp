@@ -58,7 +58,7 @@ class _teacherComplainState extends State<teacherComplain> {
     }
   }
 
-  showAlertDialog(
+  AttendanceImagesTeacherSideshowAlertDialog(
       BuildContext context, String procImg1, String procImg2, String date) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -112,8 +112,13 @@ class _teacherComplainState extends State<teacherComplain> {
     );
   }
 
-  ViewRemarksshowAlertDialog(BuildContext context, String attenddate,
-      String status, String sRemarks, String id) {
+  ViewRemarksshowAlertDialog(
+    BuildContext context,
+    String attenddate,
+    String status,
+    String sRemarks,
+    String id,
+  ) {
     // set up the buttons
     // Widget cancelButton = TextButton(
     //   child: Text("Cancel"),
@@ -179,13 +184,16 @@ class _teacherComplainState extends State<teacherComplain> {
                   admit(id, tremarksController.text);
                   // admit(snapshot.data![index].id.toString(),
                   //     snapshot.data![index].tRemarks);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          teacherComplain(teacherregno: widget.teacherregno),
-                    ),
-                  );
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) =>
+                  //         teacherComplain(teacherregno: widget.teacherregno),
+                  //   ),
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+
+                  // );
                   // snapshot.data!.removeAt(index);
                 },
                 style: ElevatedButton.styleFrom(
@@ -204,15 +212,17 @@ class _teacherComplainState extends State<teacherComplain> {
               child: ElevatedButton(
                 onPressed: () {
                   reject(id, tremarksController.text);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                   // reject(snapshot.data![index].id.toString(),
                   //     snapshot.data![index].tRemarks);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          teacherComplain(teacherregno: widget.teacherregno),
-                    ),
-                  );
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (BuildContext context) =>
+                  //         teacherComplain(teacherregno: widget.teacherregno),
+                  //   ),
+                  // );
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.deepPurple,
@@ -253,7 +263,7 @@ class _teacherComplainState extends State<teacherComplain> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Requests"),
+        title: Text("Request"),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
@@ -325,7 +335,7 @@ class _teacherComplainState extends State<teacherComplain> {
                           padding: const EdgeInsets.fromLTRB(90.0, 85, 0, 0),
                           child: TextButton(
                             onPressed: () {
-                              showAlertDialog(
+                              AttendanceImagesTeacherSideshowAlertDialog(
                                   context,
                                   snapshot.data![index].procImg1,
                                   snapshot.data![index].procImg2,
@@ -344,14 +354,18 @@ class _teacherComplainState extends State<teacherComplain> {
                             onPressed: () {
                               admit(snapshot.data![index].id.toString(),
                                   snapshot.data![index].tRemarks);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      teacherComplain(
-                                          teacherregno: widget.teacherregno),
-                                ),
-                              );
+                              // Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (BuildContext context) =>
+                              //         teacherComplain(
+                              //             teacherregno: widget.teacherregno),
+                              //   ),
+                              // );
+                              Navigator.of(context).pop(true);
+                              setState(() {
+                                snapshot.data!.removeAt(index);
+                              });
                               // snapshot.data!.removeAt(index);
                             },
                             style: ElevatedButton.styleFrom(
@@ -372,14 +386,18 @@ class _teacherComplainState extends State<teacherComplain> {
                             onPressed: () {
                               reject(snapshot.data![index].id.toString(),
                                   snapshot.data![index].tRemarks);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      teacherComplain(
-                                          teacherregno: widget.teacherregno),
-                                ),
-                              );
+                              // Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (BuildContext context) =>
+                              //         teacherComplain(
+                              //             teacherregno: widget.teacherregno),
+                              //   ),
+                              // );
+                              Navigator.of(context).pop();
+                              setState(() {
+                                snapshot.data!.removeAt(index);
+                              });
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.deepPurple,

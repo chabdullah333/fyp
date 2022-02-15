@@ -598,7 +598,7 @@ class _MyAppState extends State<MyApp> {
                             height: 140,
                             width: 120,
                           ),
-                    Text('pick img 1'),
+                    Text('pick image 1'),
                   ],
                 ),
               ),
@@ -622,7 +622,7 @@ class _MyAppState extends State<MyApp> {
                             height: 140,
                             width: 120,
                           ),
-                    Text('pick img 2'),
+                    Text('pick image 2'),
                   ],
                 ),
               ),
@@ -658,7 +658,7 @@ class _MyAppState extends State<MyApp> {
                 },
               ),
               SizedBox(
-                width: 75,
+                width: 85,
               ),
               IconButton(
                 icon: const Icon(

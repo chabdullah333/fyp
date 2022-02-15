@@ -20,6 +20,9 @@ class Crsattendance {
     required this.processedpicture2,
     required this.uniqueid,
     required this.cStatus,
+    required this.reqStatus,
+    required this.sRemarks,
+    required this.tRemarks,
   });
 
   String venue;
@@ -29,6 +32,9 @@ class Crsattendance {
   String processedpicture2;
   int uniqueid;
   String cStatus;
+  String reqStatus;
+  String sRemarks;
+  String tRemarks;
 
   factory Crsattendance.fromJson(Map<String, dynamic> json) => Crsattendance(
         venue: json["Venue"],
@@ -38,6 +44,9 @@ class Crsattendance {
         processedpicture2: json["processedpicture2"],
         uniqueid: json["uniqueid"],
         cStatus: json["cStatus"],
+        reqStatus: json["ReqStatus"],
+        sRemarks: json["S_Remarks"],
+        tRemarks: json["T_Remarks"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -48,5 +57,8 @@ class Crsattendance {
         "processedpicture2": processedpicture2,
         "uniqueid": uniqueid,
         "cStatus": cStatus,
+        "ReqStatus": reqStatus,
+        "S_Remarks": sRemarks,
+        "T_Remarks": tRemarks,
       };
 }

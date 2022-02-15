@@ -10,6 +10,7 @@ import 'package:secondapp/verifyattendance.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: loginpage(),
   ));
 }

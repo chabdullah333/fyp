@@ -124,6 +124,7 @@ class _testState extends State<test> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Show Attendance'),
+        backgroundColor: Colors.red,
         centerTitle: true,
       ),
       body: PageView.builder(

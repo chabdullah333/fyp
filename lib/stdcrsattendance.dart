@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:secondapp/login.dart';
 import 'Model/crsattendance.dart';
 import 'package:secondapp/testmark.dart';
 
@@ -62,14 +63,10 @@ class _courseattendanceState extends State<courseattendance> {
       child: Text("Apply"),
       onPressed: () {
         complain();
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => courseattendance(
-                    username: widget.username,
-                    coursecode: widget.coursecode,
-                    coursetitle: widget.coursetitle)));
-        // Navigator.of(context).pop();
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (BuildContext context) => loginpage()));
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
       },
     );
 
@@ -127,6 +124,143 @@ class _courseattendanceState extends State<courseattendance> {
       actions: [
         cancelButton,
         applyButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  AttendanceImagesStudentSideshowAlertDialog(BuildContext context,
+      String processedpicture1, String processedpicture2) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            child: Image(
+              height: 200,
+              width: 200,
+              image: NetworkImage(
+                  "http://${Url.ip}:5001/fyppythonfinal/ProcessedUnProcessedImages/${processedpicture1}"),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            child: Image(
+              height: 200,
+              width: 200,
+              image: NetworkImage(
+                  "http://${Url.ip}:5001/fyppythonfinal/ProcessedUnProcessedImages/${processedpicture2}"),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        cancelButton,
+        // continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  ViewDetailshowAlertDialog(BuildContext context, String date, String reqStatus,
+      String sRemarks, String tRemarks) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: Container(
+        height: 400,
+        width: 350,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: Text(
+                "Attendance date : ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(130, 0, 0, 0),
+              child: Text("${date}"),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: Text(
+                "Request Status : ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(130, 20, 0, 0),
+              child: Text("${reqStatus}"),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+              child: Text(
+                "your remarks:",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(130, 40, 0, 0),
+              child: Text("${sRemarks}"),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 150, 0, 0),
+              child: Text(
+                "Teacher Remarks :",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(140, 150, 0, 0),
+              child: Text(tRemarks),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        cancelButton,
+        // continueButton,
       ],
     );
 
@@ -279,15 +413,48 @@ class _courseattendanceState extends State<courseattendance> {
                                     Container(
                                       height: 20,
                                       width: 80,
-                                      child: Text(
-                                        (snapshot.data![index].cStatus == "yes")
-                                            ? ("view details")
-                                            : (""),
-                                        style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          decoration: TextDecoration.underline,
+                                      child: InkWell(
+                                        onTap: () {
+                                          ViewDetailshowAlertDialog(
+                                              context,
+                                              snapshot.data![index].date
+                                                  .toString(),
+                                              snapshot.data![index].reqStatus,
+                                              snapshot.data![index].sRemarks,
+                                              snapshot.data![index].tRemarks);
+                                        },
+                                        child: Text(
+                                          (snapshot.data![index].cStatus ==
+                                                  "yes")
+                                              ? ("view details")
+                                              : (""),
+                                          style: TextStyle(
+                                            color: Colors.blueAccent,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
                                         ),
                                       ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      height: 25,
+                                      child: InkWell(
+                                          onTap: () {
+                                            AttendanceImagesStudentSideshowAlertDialog(
+                                                context,
+                                                snapshot.data![index]
+                                                    .processedpicture1,
+                                                snapshot.data![index]
+                                                    .processedpicture2);
+                                          },
+                                          child: Image(
+                                            image: AssetImage(
+                                              'images/gallery.png',
+                                            ),
+                                          )),
                                     ),
                                   ],
                                 ),
